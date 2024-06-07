@@ -16,15 +16,15 @@ class ProjectSeeder extends Seeder
      */
     public function run(Faker $faker): void
     {
-          $types = Type::all();
-             $ids = $types->pluck('id')->all();
+        $types = Type::all();
+        $ids = $types->pluck('id')->all();
 
 
         for ($i = 0; $i < 10; $i++) {
 
             $new_project = new Project();
             // $new_project->type_id = Type::inRandomOrder()->first()->id;
-             $new_project->type_id = $faker->optional()->randomElement($ids);
+            $new_project->type_id = $faker->optional()->randomElement($ids);
             $project_name = $faker->sentence(6);
             $new_project->project_name = $project_name;
             $new_project->slug = Str::slug($project_name);

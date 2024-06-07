@@ -12,9 +12,9 @@
                 <p class="fst-italic"><span class="fw-bold">Description:</span> {{$project->description}}</p>
                 <p class="fst-italic"><span class="fw-bold">Type:</span>{{ $project->type ? $project->type->name : '' }}</p>
                 <div>
-                    <ul class="d-flex gap-2">
+                    <ul class="d-flex gap-2 list-unstyled">
                         @foreach ($project->technologies as $technology)
-                        <li> tecnologia :{{$technology->name}}</li>
+                        <li> {{$technology->name}}</li>
                         
                         @endforeach
                     </ul>

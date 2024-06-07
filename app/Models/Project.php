@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Project extends Model
 {
     use HasFactory;
@@ -13,5 +14,11 @@ class Project extends Model
     {
         return $this->belongsTo(Type::class);
 
+    }
+
+
+    public function tecnologies(){
+
+        return $this->belongsToMany(Technology::class);
     }
 }

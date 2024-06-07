@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Technology;
 use App\Models\Type;
 use App\Models\Project;
-// use Illuminate\Http\Request;
+ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -31,7 +32,10 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::orderBy('name', 'asc')->get();
-        return view('admin.projects.create', compact('types'));
+
+        $technologies = Technology::orderBy('name', 'asc')->get();
+
+        return view('admin.projects.create', compact('types','technologies'));
     }
 
     /**
@@ -45,7 +49,7 @@ class ProjectController extends Controller
 
 
 
-
+        // dd($form_data);
 
         $base_slug = Str::slug($form_data['project_name']);
         $slug = $base_slug;
@@ -68,6 +72,11 @@ class ProjectController extends Controller
 
         $project = Project::create($form_data);
 
+        //controllo invio tecnologie 
+        if($request->has('technologies')){
+            $project->technologies()->attach($request->technologies);
+        }
+
         return to_route('admin.projects.show', $project);
     }
 
@@ -76,6 +85,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        $project->load(['type', 'type.projects']);
+
         return view('admin.projects.show', compact('project'));
     }
 
@@ -84,10 +95,11 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
+        $project->load(['technologies']);
+        $technologies = Technology::orderBy('name', 'asc')->get();
+        $types = Type::orderBy('name', 'asc')->get();
 
-
-
-        return view('admin.projects.edit', compact('project'));
+        return view('admin.projects.edit', compact('project','types', 'technologies'));
     }
 
     /**
@@ -98,11 +110,6 @@ class ProjectController extends Controller
         // validazione in UpdateProjectController
 
         $form_data = $request->validated();
-
-        
-        
-
-        
 
 
 

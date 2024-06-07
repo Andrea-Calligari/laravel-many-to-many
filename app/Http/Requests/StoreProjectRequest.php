@@ -26,7 +26,8 @@ class StoreProjectRequest extends FormRequest
             'description' => 'nullable|max:2000',
             'working_hours' => 'required|integer',
             'co_workers' => 'nullable|max:200',
-            'type_id' => 'nullable|exists:types,id'
+            'type_id' => 'nullable|exists:types,id',
+            'technologies'=> 'exists:technologies,id'
         ];
     }
 }

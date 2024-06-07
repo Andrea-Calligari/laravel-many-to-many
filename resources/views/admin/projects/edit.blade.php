@@ -13,14 +13,41 @@
 
             <div class="mb-3">
                 <label for="project_name" class="form-label">Project Name</label>
-                <input type="text" name="project_name" class="form-control" id="project_name" placeholder="Insert your project name "
-                    value="{{old('project_name', $project->project_name)}}">
+                <input type="text" name="project_name" class="form-control" id="project_name"
+                    placeholder="Insert your project name " value="{{old('project_name', $project->project_name)}}">
             </div>
-             <div class="mb-3">
+            <div class="mb-3">
                 <label for="slug" class="form-label">Slug</label>
                 <input type="text" name="slug" class="form-control" id="slug" placeholder="Insert slug "
                     value="{{old('slug', $project->slug)}}">
-            </div> 
+            </div>
+            <div class="mb-3">
+                <label for="type_id" class="form-label">Type</label>
+                <select class="form-control" name="type_id" id="type_id">
+                    <option value="">-- Type Select --</option>
+                    @foreach($types as $type) 
+                        <option @selected($type->id == old('type_id', $project->type_id))
+                            value="{{ $type->id }}"> {{ $type->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mb-3">
+                <div class="form-group">
+                    <div>Choose a Technology</div>
+                    <div  class="d-flex gap-3 ">
+                        @foreach ($technologies as $technology)
+
+                            <label class="form-check-label"
+                                for="technologies-{{$technology->id}}">{{$technology->name}}</label>
+                            <input @checked(in_array($technology->id, old('technologies', []))) value="{{$technology->id}}"
+                                class="form-check-input " type="checkbox" name="technologies[]"
+                                id="technologies-{{$technology->id}}">
+                        @endforeach
+
+                    </div>
+
+                </div>
+            </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
                 <textarea class="form-control" name="description" id="description" rows="3"

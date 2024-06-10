@@ -10,12 +10,13 @@
                 </div>
                 <p class="fst-italic"><span class="fw-bold">Slug:</span> {{$project->slug}}</p>
                 <p class="fst-italic"><span class="fw-bold">Description:</span> {{$project->description}}</p>
-                <p class="fst-italic"><span class="fw-bold">Type:</span>{{ $project->type ? $project->type->name : '' }}</p>
+                <p class="fst-italic"><span class="fw-bold">Type:</span>{{ $project->type ? $project->type->name : '' }}
+                </p>
                 <div>
                     <ul class="d-flex gap-2 list-unstyled">
                         @foreach ($project->technologies as $technology)
-                        <li> {{$technology->name}}</li>
-                        
+                            <li> {{$technology->name}}</li>
+
                         @endforeach
                     </ul>
                 </div>
@@ -27,43 +28,60 @@
                     <a class="btn btn-outline-warning" href="{{ route('admin.projects.edit', $project)}}">Edit</a>
                     <button class="btn btn-outline-danger" id="trash">Trash</button>
                 </div>
-                <script>
-                    let trash = document.getElementById('trash')
-
-                    trash.addEventListener('click', function () {
-
-                        let form = document.getElementById('form')
-
-                        let trashConf = confirm('Sei sicuro di volere eliminare?')
-                        if (trashConf === true) {
-
-                            form.innerHTML +=
-                                `
-                              <form action="{{ route('admin.projects.destroy', $project) }}" method="POST">
-                              @method('DELETE')
-                              @csrf
-    
-                              
-         
-                              <button type="submit" style="display:none;" id='confirm'>trash</button>
-    
-                              </form>
-                            `
-                            let confirm = document.getElementById('confirm').click()
-
-                        }
-
-
-                    })
-                </script>
-
             </div>
         </div>
+        @if($project->type)
+        <div class="container py-4">
+            <h1>Related project</h1>
+            @foreach($project->type->projects as $related_post)
+                <div>
+                    <ul>
+                        <li>
+    
+                            <h3><a href="{{ route('admin.projects.show', $related_post) }}">
+                                    {{ $related_post->project_name }}
+                                </a></h3>
+                        </li>
+                    </ul>
+                </div>
+            @endforeach
+        </div>
+        @endif
+
     </div>
 </div>
 
 
+<script>
 
+    let trash = document.getElementById('trash')
+
+    trash.addEventListener('click', function () {
+
+        let form = document.getElementById('form')
+
+        let trashConf = confirm('Sei sicuro di volere eliminare?')
+        if (trashConf === true) {
+
+            form.innerHTML +=
+                `
+                   <form action="{{ route('admin.projects.destroy', $project) }}" method="POST">
+                   @method('DELETE')
+                   @csrf
+
+                   
+
+                   <button type="submit" style="display:none;" id='confirm'>trash</button>
+
+                   </form>
+                 `
+            let confirm = document.getElementById('confirm').click()
+
+        }
+
+
+    })
+</script>
 
 
 @endsection
